@@ -21,7 +21,7 @@ class HTMLTargetParser(HTMLParser):
 url = 'http://ctf.imesec.org/web-4444'
 data_values={'userName':'cebola ',
 	'userPassword':'batata'}
-r = requests.post(url,data = data_list)
+r = requests.post(url,data = data_values)
 targetParser = HTMLTargetParser()
 targetParser.feed(r.text)
 
