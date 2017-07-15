@@ -1,6 +1,4 @@
 from html.parser import HTMLParser
-import requests
-import string
 
 class HTMLForm:
 	formType = "GET"
@@ -47,16 +45,3 @@ class HTMLTargetParser(HTMLParser):
 			self.formList.append(self.formObject)
 			self.formObject = None
 			self.inForm = False
-
-
-url = 'http://ctf.imesec.org/web-4444'
-
-#data_values={'userName':'cebola',
-#	'userPassword':'batata'}
-#r = requests.post(url,data = data_values)
-
-r = requests.get(url)
-targetParser = HTMLTargetParser()
-targetParser.feed(r.text)
-print (targetParser.formList[0].formType)
-print (str(targetParser.formList[0].elementList))
