@@ -1,4 +1,6 @@
 {	
-	"test":"module_test",
-	"inexistente":"module_test"
+	"test":{
+		"directory":"test",
+		"name":"module_test"},
+	"inexistente":"test"
 }
