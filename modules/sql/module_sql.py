@@ -8,7 +8,7 @@ def BEGIN():
 	return res
 
 def RUN(file_name):
-    url = 'http://ctf.imesec.org:4444'
+    url = 'https://ctf.imesec.org/web-4444'
     try:
         r = requests.get(url)
         targetParser = HTMLTargetParser()
@@ -24,10 +24,10 @@ def RUN(file_name):
             print (targetParser.formList[0].formType)
             dataValues={}
             for dataField in form.elementList:
-                dataValues.update({dataField[1]:'agora vai dar " ruim'})
+                dataValues.update({dataField[1]:'cebola'})
                 print (dataValues)
             try:
-                s = requests.post(url,data = dataValues)  
+                s = requests.post(url,data = dataValues,verify = True)  
                 print (s.text)
             except Exception:
                 print ("[-] An error occured while trying to POST data")
