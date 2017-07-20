@@ -8,4 +8,6 @@ def BEGIN():
 def RUN(file_name):
 	with open(file_name + ".json", "r") as input_data:
 		parameters = json.load(input_data)
-	print("\nHello, my name is " + parameters["Name"] + " and I'm " + parameters["Age"] + " years old.")
+	result = "Hello, my name is " + parameters["Name"] + " and I'm " + parameters["Age"] + " years old."
+	print(result)
+	return result
