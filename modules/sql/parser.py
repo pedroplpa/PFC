@@ -37,7 +37,7 @@ class HTMLTargetParser(HTMLParser):
 			method="GET"
 			for attr in attrs:
 				if (str.upper(attr[0]) == "METHOD"):
-					method = attr[1]
+					method = str.upper(attr[1])
 			self.formObject = HTMLForm(method)
 			self.inForm = True
 	def handle_endtag(self, tag):
