@@ -9,19 +9,23 @@ class HTMLForm:
 		self.elementList.append([tag,elementName,elementType,elementValue])
 
 	def processElement(self,tag,attrs):
-		if tag == 'input':
+		tag = str.lower(tag)
+		if tag in ['input','textarea','select']:
 			elementName = ''
-			elementType = 'input'
+			#Default type for input tags is text 
+			if tag == 'input':
+				elementType='text'
+			elementType = ''
 			elementValue = ''
 			for attr in attrs:
-				if (str.upper(attr[0]) == 'NAME'):
+				if (str.lower(attr[0]) == 'name'):
 					elementName = attr[1]
-				if (str.upper(attr[0]) == 'TYPE'):
+				if (str.lower(attr[0]) == 'type'):
 					elementType = attr[1]
-				if (str.upper(attr[0]) == 'VALUE'):
+				if (str.lower(attr[0]) == 'value'):
 					elementValue = attr[1]
 			#Ensure that the INPUT submit field will not be included in the target element list
-			if (str.upper(elementType) != "SUBMIT"):
+			if (str.lower(elementType) != "submit"):
 				self.addElement(tag,elementName,elementType,elementValue)
 		
 		#Check if it is a button tag with action and search values, for composing the "ACTION" field of a request
@@ -30,19 +34,19 @@ class HTMLForm:
 			elementName = ''
 			elementValue = ''
 			for attr in attrs:
-				if (str.upper(attr[0]) == "NAME"):
+				if (str.lower(attr[0]) == 'name'):
 					elementName = attr[1]
-				if (str.upper(attr[0]) == "TYPE"):
+				if (str.lower(attr[0]) == 'type'):
 					elementType = attr[1]
-				if (str.upper(attr[0]) == "VALUE"):
+				if (str.lower(attr[0]) == 'value'):
 					elementValue = attr[1]
-			if (str.upper(elementType) == "SUBMIT"): 
+			if (str.lower(elementType) == "submit"): 
 				self.addElement(tag,elementName,elementType,elementValue)
 			
 class HTMLTargetParser(HTMLParser):
 	#For now, let us treat only the input elements of our HTML document
 	#targetTagList = ['select','input','textarea','option']
-	targetTagList = ['input','button']
+	targetTagList = ['input','button','select','textarea']
 	inForm = False
 	formList = []
 	formObject = None
