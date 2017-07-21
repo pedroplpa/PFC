@@ -10,8 +10,9 @@ class HTMLForm:
 
 	def processElement(self,tag,attrs):
 		if tag == 'input':
+			elementName = ''
 			elementType = 'input'
-			elementValue = '' 
+			elementValue = ''
 			for attr in attrs:
 				if (str.upper(attr[0]) == 'NAME'):
 					elementName = attr[1]
@@ -25,9 +26,9 @@ class HTMLForm:
 		
 		#Check if it is a button tag with action and search values, for composing the "ACTION" field of a request
 		if tag == 'button':
-			elementType = 'ad'
-			elementName = 'ad'
-			elementValue = 'ad'
+			elementType = ''
+			elementName = ''
+			elementValue = ''
 			for attr in attrs:
 				if (str.upper(attr[0]) == "NAME"):
 					elementName = attr[1]
