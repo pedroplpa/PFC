@@ -74,6 +74,7 @@ def sendRequestAndSaveResponse(url,session,dataValues,requestType,fileName,timeo
 
 def errorBasedSQLStrategy (url,session, dataValues,requestType):
     result = False
+    timeout = 3
     try:
         if (requestType == 'POST'):
             s = session.post(url, data = dataValues,timeout = timeout)  
@@ -120,5 +121,7 @@ def timeBasedBlindSQLStrategy (url,session,dataValues,requestType):
             except requests.Timeout:
                 print ("[+] Timeout reached, possible vulnerability detected. Yay!")
                 retValue = True
+                return retValue
         except requests.Timeout:
             print ("[-] Timeout reached, it seems that server crashed. Try again later.")
+            return retValue
