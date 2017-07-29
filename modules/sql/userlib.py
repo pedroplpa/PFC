@@ -58,8 +58,12 @@ def sendRequestAndSaveResponse(url,session,dataValues,requestType,fileName,timeo
     f = open(fileName,'w')
     f.write(s.text)
     f.close()
-            
-def timeBasedBlindSQLStrategy (url,session,dataValues,requestType,fileName):
+
+def errorBasedSQLStrategy (url,session, dataValues,requestType):
+    print ("[-] Vala!")
+    return False
+
+def timeBasedBlindSQLStrategy (url,session,dataValues,requestType):
     #Defining the first timeout as 5 seconds
     timeout = 5
     retValue = False

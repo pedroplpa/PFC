@@ -12,7 +12,8 @@ def RUN(file_name):
     filePrefix = 'form-'
     nonMaliciousResponseFileName = '-nonMaliciousAttempt'
     maliciousResponseFileName = '-attempt-'
-    payloadFileName='sql_inj_payload'
+    errorBasedPayloadFile='payloads/error_based'
+    timeBasedPayloadFile='payloads/time_based'
 
     session = loginIntoBWAPPApplication(loginUrl)
     print ("[+] Sending request for the URL web page")
@@ -42,13 +43,31 @@ def RUN(file_name):
         requestType = form.formType
         print("[+] Sending non malicious request for FORM #" + str(id))
         sendRequestAndSaveResponse(url,session,dataValues,requestType,filePath)
-        payloadFile = open(payloadFileName,'r')
-        for attempt,payload in enumerate(payloadFile.read().splitlines()): 
-            dataValues = createDictionary(form,payload)
-            filePath = attemptsFolder + filePrefix+ str(id) + maliciousResponseFileName + str(attempt)
-            requestType=form.formType
-            print("[+] Sending request for FORM #" + str(id) + ". PAYLOAD: " + payload)
-            sendRequestAndSaveResponse(url,session,dataValues,requestType,filePath)
-        payloadFile.close()
-        print("[+] Finished all requests for FORM #" + str(id))
+
+        errorPayloadFile = open(errorBasedPayloadFile,'r')
+        strategy = errorBasedSQLStrategy
+        print("[+] Testing form " +str(id)+ "for error-based SQL injection detection")
+        for attempt,errorPayload in enumerate(errorPayloadFile.read().splitlines()): 
+            dataValues = createDictionary(form,errorPayload)
+            print("[+] Sending request for FORM #" + str(id) + ". PAYLOAD: " + errorPayload)
+            if errorBasedSQLStrategy(url,session,dataValues,requestType):
+                print ("[!] Possible error-based vulnerability detected for form " 
+                        + str(id) + " using payload " + errorPayload)
+                print ("Do you want to continue testing (y/n)?")
+                ans = input()
+                if (str.lower(ans) == "n"):
+                    break
+        errorPayloadFile.close()
+
+
+        #payloadFile = open(payloadFileName,'r')
+        #for attempt,payload in enumerate(payloadFile.read().splitlines()): 
+        #    dataValues = createDictionary(form,payload)
+        #    filePath = attemptsFolder + filePrefix+ str(id) + maliciousResponseFileName + str(attempt)
+        #    requestType=form.formType
+        #    print("[+] Sending request for FORM #" + str(id) + ". PAYLOAD: " + payload)
+        #    sendRequestAndSaveResponse(url,session,dataValues,requestType,filePath)
+        #payloadFile.close()
+        #print("[+] Finished all requests for FORM #" + str(id))
+
 RUN("")
