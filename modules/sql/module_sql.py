@@ -72,7 +72,8 @@ def RUN(file_name):
         #If an possible vulnerability was already detected, ask if the user wants to test for time-based
         if detectedErrorBasedSQL:
             print("[!] For FORM #" +str(id)+" there was an possible error-based SQL Injection " 
-                    + "vulnerability detected. Do you want to continue and test for time-based? (y/n)")
+                    + "vulnerability detected.")
+            print("Do you want to continue and test for time-based? (y/n)")
             ans = input()
             if (str.lower(ans) == "n"):
                 continue
