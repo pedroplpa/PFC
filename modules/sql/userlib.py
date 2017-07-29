@@ -87,7 +87,7 @@ def errorBasedSQLStrategy (url,session, dataValues,requestType):
         checkLines = checkFile.readlines()
         for line in checkLines:
             if line.rstrip() in str.lower(s.text):
-                print ("[-] Detected \"" + line + "\" in the response, possible sql error-based vulnerability")
+                print ("[-] Detected \"" + line.rstrip() + "\" in the response, possible sql error-based vulnerability")
                 result = True
     if not result:
         print ("[-] No errors detected")

@@ -52,6 +52,7 @@ def RUN(file_name):
         sendRequestAndSaveResponse(url,session,dataValues,requestType,filePath)
 
         #Set our strategy for ERROR-BASED and test for every payload
+        detectedErrorBasedSQL = False
         errorPayloadFile = open(errorBasedPayloadFileName,'r')
         strategy = errorBasedSQLStrategy
         print("[+] Testing form " + str(id) + " for error-based SQL injection detection")
@@ -59,6 +60,7 @@ def RUN(file_name):
             dataValues = createDictionary(form,errorPayload)
             print("[+] Sending request for FORM #" + str(id) + ". PAYLOAD: " + errorPayload)
             if strategy(url,session,dataValues,requestType):
+                detectedErrorBasedSQL = True
                 print ("[!] Possible error-based vulnerability detected for form " 
                         + str(id) + " using payload " + errorPayload)
                 print ("Do you want to continue testing (y/n)?")
@@ -67,6 +69,14 @@ def RUN(file_name):
                     break
         errorPayloadFile.close()
 
+        #If an possible vulnerability was already detected, ask if the user wants to test for time-based
+        if detectedErrorBasedSQL:
+            print("[!] For FORM #" +str(id)+" there was an possible error-based SQL Injection " 
+                    + "vulnerability detected. Do you want to continue and test for time-based? (y/n)")
+            ans = input()
+            if (str.lower(ans) == "n"):
+                continue
+        
         #Set our strategy for TIME-BASED and test for every payload
         timeBasedPayloadFile = open(timeBasedPayloadFileName,'r')
         strategy = timeBasedBlindSQLStrategy
