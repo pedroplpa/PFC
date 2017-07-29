@@ -1,12 +1,14 @@
 import json
 import requests
 import datetime
+import os
 from parser import HTMLForm
 from parser import HTMLTargetParser
 
 #Method for creating the results file for documenting all errors detected
 def createResultsFile():
     date = datetime.datetime.now()
+    os.makedirs(os.path.dirname("results/report"),exist_ok=True)
     resultsFile = open("results/report",'w')
     resultsFile.writelines("Testing starting at %s \n" %date)
     return resultsFile
