@@ -90,7 +90,7 @@ def REPORT(config, choosen_modules):
 	report["result"] = {}
 	answer = ""
 	for module in choosen_modules:
-		if os.path.isfile("modules/" + module["directory"] + "/" + module["report"] + ".json"):
+		if os.path.isfile("modules/" + module["directory"] + "/" + module["name"] + "_result.json"):
 			readline.set_completer(SimpleCompleter(["yes","no"]).complete)
 			while(answer != "no" and answer != "yes"):
 				answer = input("Use the last generated report? [yes/no] ")
@@ -100,7 +100,7 @@ def REPORT(config, choosen_modules):
 		if answer != "yes":
 			MODULE_EXECUTION(config, module)
 		
-		with open("modules/" + module["directory"] + "/" + module["report"] + ".json","r") as module_report:
+		with open("modules/" + module["directory"] + "/" + module["name"] + "_result.json","r") as module_report:
 			report_dict = json.load(module_report)
 			report["result"][report_dict["title"]] = report_dict["result"]
 		answer = ""
