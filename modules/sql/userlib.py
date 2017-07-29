@@ -1,7 +1,20 @@
 import json
 import requests
+import datetime
 from parser import HTMLForm
 from parser import HTMLTargetParser
+
+#Method for creating the results file for documenting all errors detected
+def createResultsFile():
+    date = datetime.datetime.now()
+    resultsFile = open("results/"+str(date),'w')
+    resultsFile.writelines("Testing starting at %s \n" %date)
+    return resultsFile
+
+def closeResultsFile(resultsFile):
+    date = datetime.datetime.now()
+    resultsFile.writelines("Testing finished at %s \n" %date)
+    resultsFile.close()
 
 #Method for logging into the application and creating a Session for accessing the 
 #different vulnerable pages in the bWAPP server for demonstration and testing
