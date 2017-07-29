@@ -69,6 +69,7 @@ def sendRequestAndSaveResponse(url,session,dataValues,requestType,fileName,timeo
     except requests.Timeout:
         print ("[-] Request timeout")
         return
+    os.makedirs(os.path.dirname(filename),exist_ok=True)
     f = open(fileName,'w')
     f.write(s.text)
     f.close()
