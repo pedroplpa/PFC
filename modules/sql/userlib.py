@@ -73,8 +73,24 @@ def sendRequestAndSaveResponse(url,session,dataValues,requestType,fileName,timeo
     f.close()
 
 def errorBasedSQLStrategy (url,session, dataValues,requestType):
-    print ("[-] Vala!")
-    return False
+    result = False
+    try:
+        if (requestType == 'POST'):
+            s = session.post(url, data = dataValues,timeout = timeout)  
+        if (requestType == 'GET'):
+            s = session.get(url, params = dataValues,timeout = timeout)
+    except requests.Timeout:
+        print ("[-] Request timeout")
+        return
+    with open("sql_error_check.txt","r") as checkFile:
+        checkLines = checkFile.readlines()
+        for line in checkLines:
+            if line in s.text:
+                print ("[-] Detected \"" + line + "\" in the response, possible sql error-based vulnerability")
+                result = True
+    if not result:
+        print ("[-] No errors detected")
+    return result
 
 def timeBasedBlindSQLStrategy (url,session,dataValues,requestType):
     #Defining the first timeout as 5 seconds
