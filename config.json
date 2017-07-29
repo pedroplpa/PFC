@@ -1,10 +1,8 @@
 {	
 	"test":{
 		"directory":"test",
-		"name":"module_test",
-		"report":"module_test_result"},
+		"name":"module_test"},
 	"sql_injection":{
 		"directory":"sql",
-		"name":"module_sql",
-		"report":"module_sql_result"}
+		"name":"module_sql"}
 }
