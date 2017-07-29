@@ -1,8 +1,8 @@
 import json
 import requests
 import datetime
-from parser import HTMLForm
-from parser import HTMLTargetParser
+from .parser import HTMLForm
+from .parser import HTMLTargetParser
 
 #Method for creating the results file for documenting all errors detected
 def createResultsFile():

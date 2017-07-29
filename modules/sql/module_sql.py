@@ -1,4 +1,4 @@
-from userlib import *
+from .userlib import *
 
 def BEGIN():
 	res = ["URL"]
