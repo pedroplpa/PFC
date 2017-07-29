@@ -5,20 +5,28 @@ from parser import HTMLTargetParser
 
 #Method for logging into the application and creating a Session for accessing the 
 #different vulnerable pages in the bWAPP server for demonstration and testing
-def loginIntoBWAPPApplication(loginUrl):
-    session = requests.Session()
-    loginPayload = {'login':'bee','password':'bug','security_level':'0','form':'submit'}
-    login = session.post(loginUrl, data=loginPayload)
+def loginIntoBWAPPApplication(loginUrl,timeout = 3):
+    try:
+        session = requests.Session()
+        loginPayload = {'login':'bee','password':'bug','security_level':'0','form':'submit'}
+        login = session.post(loginUrl, data=loginPayload,timeout = timeout)
+    except requests.Timeout:
+        print ("[-] Login request timeout")
+        exit()
     return session
     
 #Method for parsing the web page and finding all HTML forms 
 def parseHtmlPage(url,session):
-    r = session.get(url)
-    print ("[+] Response received. Parsing HTML Document in order to detect FORMS")
-    targetParser = HTMLTargetParser()
-    targetParser.feed(r.text)
-    if not targetParser.formList:
-        print ("[-] The given URL had no forms for targetting")
+    try:
+        r = session.get(url,timeout = 3)
+        print ("[+] Response received. Parsing HTML Document in order to detect FORMS")
+        targetParser = HTMLTargetParser()
+        targetParser.feed(r.text)
+        if not targetParser.formList:
+            print ("[-] The given URL had no forms for targetting")
+            exit()
+    except requests.Timeout:
+        print ("[-] Request for page timeout")
         exit()
     return targetParser
 
@@ -38,12 +46,16 @@ def createDictionary(form,value = None):
                 dataValues.update({dataField[1]:value})
     return dataValues
 
-def sendRequestAndSaveResponse(url,session,dataValues,requestType,fileName):
-    if (requestType == 'POST'):
-        dataValues.update({'action':'search'})
-        s = session.post(url, data = dataValues)  
-    if (requestType == 'GET'):
-        s = session.get(url, params = dataValues)
+def sendRequestAndSaveResponse(url,session,dataValues,requestType,fileName,timeout = 3):
+    try:
+        if (requestType == 'POST'):
+            dataValues.update({'action':'search'})
+            s = session.post(url, data = dataValues,timeout = timeout)  
+        if (requestType == 'GET'):
+            s = session.get(url, params = dataValues,timeout = timeout)
+    except requests.Timeout:
+        print ("[-] Request timeout")
+        return
     f = open(fileName,'w')
     f.write(s.text)
     f.close()
@@ -53,8 +65,8 @@ def BEGIN():
 	return res
 
 def RUN(file_name):
-    loginUrl ='http://192.168.15.15/bWAPP/login.php'
-    url = 'http://192.168.15.15/bWAPP/sqli_6.php'
+    loginUrl ='http://169.254.5.156/bWAPP/login.php'
+    url = 'http://162.254.5.156/bWAPP/sqli_6.php'
     nonMaliciousValue='cebola'
     attemptsFolder='attempts/'
     filePrefix = 'form-'
