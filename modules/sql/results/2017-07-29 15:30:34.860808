@@ -1,0 +1,8 @@
+Testing starting at 2017-07-29 15:30:34.860808 
+URL tested: http://192.168.0.43/bWAPP/sqli_1.php
+Forms detected on the page: 
+ID: #0: {'action': 'search', 'title': ''}
+ID: #1: {'security_level': '', 'form_security_level': 'submit'}
+ID: #2: {'bug': '', 'form_bug': 'submit'}
+ID of forms tested: [0] 
+Testing finished at 2017-07-29 15:30:37.075826 

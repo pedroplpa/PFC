@@ -95,7 +95,7 @@ warning: cannot modify header information - headers already sent
 warning: supplied argument is not a valid file-handle resource in
 warning: mysql_query()
 warning: pg_connect(): unable to connect to postgresql server: fatal
-you have an error in your sql syntax near
+you have an error in your sql syntax
 detected an internal error [ibm][cli driver][db2/6000]
 error
 include_path

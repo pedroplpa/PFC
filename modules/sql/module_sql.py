@@ -54,7 +54,7 @@ def RUN(file_name):
         #Set our strategy for ERROR-BASED and test for every payload
         errorPayloadFile = open(errorBasedPayloadFileName,'r')
         strategy = errorBasedSQLStrategy
-        print("[+] Testing form " + str(id) + "for error-based SQL injection detection")
+        print("[+] Testing form " + str(id) + " for error-based SQL injection detection")
         for attempt,errorPayload in enumerate(errorPayloadFile.read().splitlines()): 
             dataValues = createDictionary(form,errorPayload)
             print("[+] Sending request for FORM #" + str(id) + ". PAYLOAD: " + errorPayload)
@@ -70,7 +70,7 @@ def RUN(file_name):
         #Set our strategy for TIME-BASED and test for every payload
         timeBasedPayloadFile = open(timeBasedPayloadFileName,'r')
         strategy = timeBasedBlindSQLStrategy
-        print("[+] Testing form " + str(id) + "for time-based SQL injection detection")
+        print("[+] Testing form " + str(id) + " for time-based SQL injection detection")
         for attempt,timePayload in enumerate(timeBasedPayloadFile.read().splitlines()): 
             dataValues = createDictionary(form,timePayload)
             print("[+] Sending request for FORM #" + str(id) + ". PAYLOAD: " + timePayload)
@@ -84,6 +84,8 @@ def RUN(file_name):
         timeBasedPayloadFile.close()
 
     closeResultsFile(resultsFile)
+    
+    return resultsFile
 
         #payloadFile = open(payloadFileName,'r')
         #for attempt,payload in enumerate(payloadFile.read().splitlines()): 

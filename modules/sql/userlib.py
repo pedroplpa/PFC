@@ -7,14 +7,13 @@ from parser import HTMLTargetParser
 #Method for creating the results file for documenting all errors detected
 def createResultsFile():
     date = datetime.datetime.now()
-    resultsFile = open("results/"+str(date),'w')
+    resultsFile = open("results/report",'w')
     resultsFile.writelines("Testing starting at %s \n" %date)
     return resultsFile
 
 def closeResultsFile(resultsFile):
     date = datetime.datetime.now()
     resultsFile.writelines("Testing finished at %s \n" %date)
-    resultsFile.close()
 
 #Method for logging into the application and creating a Session for accessing the 
 #different vulnerable pages in the bWAPP server for demonstration and testing
@@ -73,6 +72,7 @@ def sendRequestAndSaveResponse(url,session,dataValues,requestType,fileName,timeo
     f.close()
 
 def errorBasedSQLStrategy (url,session, dataValues,requestType):
+    timeout = 4
     result = False
     try:
         if (requestType == 'POST'):
@@ -85,7 +85,7 @@ def errorBasedSQLStrategy (url,session, dataValues,requestType):
     with open("sql_error_check.txt","r") as checkFile:
         checkLines = checkFile.readlines()
         for line in checkLines:
-            if line in s.text:
+            if line.rstrip() in str.lower(s.text):
                 print ("[-] Detected \"" + line + "\" in the response, possible sql error-based vulnerability")
                 result = True
     if not result:
