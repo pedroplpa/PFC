@@ -8,12 +8,12 @@ def RUN(file_name):
     loginUrl ='http://192.168.0.43/bWAPP/login.php'
     url = 'http://192.168.0.43/bWAPP/sqli_1.php'
     nonMaliciousValue='cebola'
-    attemptsFolder='attempts/'
+    attemptsFolder = os.path.dirname(__file__) + '/attempts/'
     filePrefix = 'form-'
     nonMaliciousResponseFileName = '-nonMaliciousAttempt'
     maliciousResponseFileName = '-attempt-'
-    errorBasedPayloadFileName ='payloads/error_based'
-    timeBasedPayloadFileName='payloads/time_based'
+    errorBasedPayloadFileName =os.path.dirname(__file__) + '/payloads/error_based'
+    timeBasedPayloadFileName=os.path.dirname(__file__) + '/payloads/time_based'
     
     resultsFile = createResultsFile()
     resultsFile.write("URL tested: "+url+"\n")
@@ -108,4 +108,4 @@ def RUN(file_name):
         #payloadFile.close()
         #print("[+] Finished all requests for FORM #" + str(id))
 
-RUN("")
+#RUN("")

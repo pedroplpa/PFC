@@ -8,8 +8,11 @@ from .parser import HTMLTargetParser
 #Method for creating the results file for documenting all errors detected
 def createResultsFile():
     date = datetime.datetime.now()
-    os.makedirs(os.path.dirname("results/report"),exist_ok=True)
-    resultsFile = open("results/report",'w')
+
+    script_dir = os.path.dirname(__file__)
+
+    os.makedirs(script_dir,exist_ok=True)
+    resultsFile = open(script_dir + "/report",'w')
     resultsFile.writelines("Testing starting at %s \n" %date)
     return resultsFile
 
@@ -69,7 +72,7 @@ def sendRequestAndSaveResponse(url,session,dataValues,requestType,fileName,timeo
     except requests.Timeout:
         print ("[-] Request timeout")
         return
-    os.makedirs(os.path.dirname(filename),exist_ok=True)
+    os.makedirs(os.path.dirname(fileName),exist_ok=True)
     f = open(fileName,'w')
     f.write(s.text)
     f.close()
@@ -86,7 +89,7 @@ def errorBasedSQLStrategy (url,session, dataValues,requestType):
     except requests.Timeout:
         print ("[-] Request timeout")
         return
-    with open("sql_error_check.txt","r") as checkFile:
+    with open(os.path.dirname(__file__) + "/sql_error_check.txt","r") as checkFile:
         checkLines = checkFile.readlines()
         for line in checkLines:
             if line.rstrip() in str.lower(s.text):
