@@ -13,6 +13,7 @@ def createResultsFile(fileName,url,report):
     report["title"] = {"date":date.strftime("%Y-%m-%d %H:%M:%S"),"url":url}
     return resultsFile
 
+#Dumping all the report fields into the JSON file
 def closeResultsFile(resultsFile,report):
     date = datetime.datetime.now()
     report["result"]["finish-date"] = date.strftime("%Y-%m-%d %H:%M:%S")
@@ -88,7 +89,7 @@ def errorBasedSQLStrategy (url,session, dataValues,requestType):
     except requests.Timeout:
         print ("[-] Request timeout")
         return
-    with open(os.path.dirname(__file__) + "/sql_error_check.txt","r") as checkFile:
+    with open(os.path.dirname(__file__) + "/sql_error_check","r") as checkFile:
         checkLines = checkFile.readlines()
         for line in checkLines:
             if line.rstrip() in str.lower(s.text):

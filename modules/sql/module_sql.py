@@ -6,6 +6,7 @@ def BEGIN():
 	return res
 
 def RUN(fileName):
+    #The report is an Ordered Dictionary for storing all relevant results for writing the JSON report
     report = OrderedDict()
     with open(fileName + ".json", "r") as inputData:
         parameters = json.load(inputData)
@@ -46,7 +47,6 @@ def RUN(fileName):
         idList = list(range(0,len(targetFormList)))
 
     report["result"]["forms-tested"] = str(idList) 
-    
     report["result"]["vulnerabilities"]=OrderedDict()
     
     for id in idList:
@@ -68,6 +68,7 @@ def RUN(fileName):
             dataValues = createDictionary(form,errorPayload)
             print("[+] Sending request for FORM #" + str(id) + ". PAYLOAD: " + errorPayload)
             retVal = strategy(url,session,dataValues,requestType)
+            #If the first field of retVal is true, then there were vulnerabilities detected
             if retVal[0]:
                 detectedErrorBasedSQL = True
                 print ("[!] Possible error-based vulnerability detected for form " 
