@@ -1,23 +1,26 @@
 from .userlib import *
+from collections import OrderedDict
 
 def BEGIN():
 	res = ["URL"]
 	return res
 
-def RUN(file_name):
+def RUN(fileName):
+    report = OrderedDict()
+    with open(fileName + ".json", "r") as inputData:
+        parameters = json.load(inputData)
+    url = parameters["URL"]
+    resultsFile = createResultsFile(fileName,url,report)
+    report["result"] = OrderedDict()
+
     loginUrl ='http://192.168.0.43/bWAPP/login.php'
-    url = 'http://192.168.0.43/bWAPP/sqli_1.php'
     nonMaliciousValue='cebola'
     attemptsFolder = os.path.dirname(__file__) + '/attempts/'
     filePrefix = 'form-'
     nonMaliciousResponseFileName = '-nonMaliciousAttempt'
-    maliciousResponseFileName = '-attempt-'
     errorBasedPayloadFileName =os.path.dirname(__file__) + '/payloads/error_based'
     timeBasedPayloadFileName=os.path.dirname(__file__) + '/payloads/time_based'
     
-    resultsFile = createResultsFile()
-    resultsFile.write("URL tested: "+url+"\n")
-
     session = loginIntoBWAPPApplication(loginUrl)
     print ("[+] Sending request for the URL web page")
     targetParser = parseHtmlPage(url,session)
@@ -25,13 +28,14 @@ def RUN(file_name):
     print ("[+] Parsing completed")
 
     print ("[+] The following FORMS were found in the HTML document:")
-    resultsFile.write("Forms detected on the page: \n")
+    reportFormList = []
     for index,form in enumerate(targetParser.formList):
         dataValues = createDictionary(form)
         requestType = form.formType
         print (" ID: #" + str(index) + " : " + requestType + " form with the following fields:")
         print (dataValues)
-        resultsFile.write("ID: #"+str(index)+": "+str(dataValues)+ "\n")
+        reportFormList.append({str(index):str(dataValues)})
+    report["result"]["forms-detected"] = reportFormList
 
     print ("Which of the forms will be tested? (space-separated ID list) or (all)")
     options = input()
@@ -39,11 +43,15 @@ def RUN(file_name):
     if str.lower(options) != 'all':
         idList = [int(i) for i in options.split()]
     else:
-        idList = range(0,len(targetFormList))
+        idList = list(range(0,len(targetFormList)))
 
-    resultsFile.write("ID of forms tested: "+str(idList)+" \n") 
-
+    report["result"]["forms-tested"] = str(idList) 
+    
+    report["result"]["vulnerabilities"]=OrderedDict()
+    
     for id in idList:
+        report["result"]["vulnerabilities"]["form-"+str(id)]=OrderedDict()
+        report["result"]["vulnerabilities"]["form-"+str(id)]["error-based"]=OrderedDict()
         form = targetFormList[id]
         dataValues = createDictionary(form,nonMaliciousValue)
         filePath = attemptsFolder + filePrefix + str(id) + nonMaliciousResponseFileName
@@ -59,10 +67,12 @@ def RUN(file_name):
         for attempt,errorPayload in enumerate(errorPayloadFile.read().splitlines()): 
             dataValues = createDictionary(form,errorPayload)
             print("[+] Sending request for FORM #" + str(id) + ". PAYLOAD: " + errorPayload)
-            if strategy(url,session,dataValues,requestType):
+            retVal = strategy(url,session,dataValues,requestType)
+            if retVal[0]:
                 detectedErrorBasedSQL = True
                 print ("[!] Possible error-based vulnerability detected for form " 
                         + str(id) + " using payload " + errorPayload)
+                report["result"]["vulnerabilities"]["form-"+str(id)]["error-based"]["payload "+errorPayload+" "]=retVal[1]
                 print ("Do you want to continue testing (y/n)?")
                 ans = input()
                 if (str.lower(ans) == "n"):
@@ -80,6 +90,7 @@ def RUN(file_name):
         
         #Set our strategy for TIME-BASED and test for every payload
         timeBasedPayloadFile = open(timeBasedPayloadFileName,'r')
+        report["result"]["vulnerabilities"]["form-"+str(id)]["time-based"]=OrderedDict()
         strategy = timeBasedBlindSQLStrategy
         print("[+] Testing form " + str(id) + " for time-based SQL injection detection")
         for attempt,timePayload in enumerate(timeBasedPayloadFile.read().splitlines()): 
@@ -88,16 +99,15 @@ def RUN(file_name):
             if strategy(url,session,dataValues,requestType):
                 print ("[!] Possible time-based vulnerability detected for form " 
                         + str(id) + " using payload " + timePayload)
+                report["result"]["vulnerabilities"]["form-"+str(id)]["time-based"]["payload "+timePayload+" "]="success"
                 print ("Do you want to continue testing (y/n)?")
                 ans = input()
                 if (str.lower(ans) == "n"):
                     break
         timeBasedPayloadFile.close()
 
-    closeResultsFile(resultsFile)
-    
-    return resultsFile
-
+    closeResultsFile(resultsFile,report)
+    return 0
         #payloadFile = open(payloadFileName,'r')
         #for attempt,payload in enumerate(payloadFile.read().splitlines()): 
         #    dataValues = createDictionary(form,payload)

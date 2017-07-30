@@ -6,19 +6,18 @@ from .parser import HTMLForm
 from .parser import HTMLTargetParser
 
 #Method for creating the results file for documenting all errors detected
-def createResultsFile():
+def createResultsFile(fileName,url,report):
     date = datetime.datetime.now()
-
-    script_dir = os.path.dirname(__file__)
-
-    os.makedirs(script_dir,exist_ok=True)
-    resultsFile = open(script_dir + "/report",'w')
-    resultsFile.writelines("Testing starting at %s \n" %date)
+    resultFileName = fileName+"_result"+".json"
+    resultsFile = open(resultFileName,'w')
+    report["title"] = {"date":date.strftime("%Y-%m-%d %H:%M:%S"),"url":url}
     return resultsFile
 
-def closeResultsFile(resultsFile):
+def closeResultsFile(resultsFile,report):
     date = datetime.datetime.now()
-    resultsFile.writelines("Testing finished at %s \n" %date)
+    report["result"]["finish-date"] = date.strftime("%Y-%m-%d %H:%M:%S")
+    json.dump(report,resultsFile)
+    resultsFile.close()
 
 #Method for logging into the application and creating a Session for accessing the 
 #different vulnerable pages in the bWAPP server for demonstration and testing
@@ -80,7 +79,7 @@ def sendRequestAndSaveResponse(url,session,dataValues,requestType,fileName,timeo
 def errorBasedSQLStrategy (url,session, dataValues,requestType):
     timeout = 4
     result = False
-    timeout = 3
+    messageList=[]
     try:
         if (requestType == 'POST'):
             s = session.post(url, data = dataValues,timeout = timeout)  
@@ -94,10 +93,11 @@ def errorBasedSQLStrategy (url,session, dataValues,requestType):
         for line in checkLines:
             if line.rstrip() in str.lower(s.text):
                 print ("[-] Detected \"" + line.rstrip() + "\" in the response, possible sql error-based vulnerability")
+                messageList.append(line.rstrip())
                 result = True
     if not result:
         print ("[-] No errors detected")
-    return result
+    return result,messageList
 
 def timeBasedBlindSQLStrategy (url,session,dataValues,requestType):
     #Defining the first timeout as 5 seconds
