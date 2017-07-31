@@ -41,12 +41,15 @@ class HTMLForm:
 				self.addElement(tag,elementName,elementType,elementValue)
 			
 class HTMLTargetParser(HTMLParser):
+	def __init__(self):
+		super(HTMLTargetParser,self).__init__()
 	#For now, let us treat only the input elements of our HTML document
 	#targetTagList = ['select','input','textarea','option']
-	targetTagList = ['input','button','select','textarea']
-	inForm = False
-	formList = []
-	formObject = None
+		self.targetTagList = ['input','button','select','textarea']
+		self.inForm = False
+		self.formList = []
+		self.formObject = None
+	
 	def handle_starttag(self, tag, attrs):
 		if tag in self.targetTagList:
 			if self.inForm:
