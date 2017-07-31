@@ -1,1 +1,4 @@
+modules/test/module_test_result.json
+modules/test/module_test.json
+modules/sql/attempts/*
 *.pyc
