@@ -135,13 +135,13 @@ def MAIN():
 			config = INIT()
 		elif action == module_string:
 			module = CHOOSE_MODULES(config)
-			if module == 0 or module == 1:
+			if module == 0 or module == -1:
 				continue
 			else:
 				MODULE_EXECUTION(config, module)
 		elif action == report_string:
 			modules = CHOOSE_MODULES_REPORT(config)
-			if modules == 0 or modules == 1:
+			if modules == 0 or modules == -1:
 				continue
 			else:
 				REPORT(config, modules)

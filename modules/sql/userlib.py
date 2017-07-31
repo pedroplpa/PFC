@@ -5,6 +5,30 @@ import os
 from .parser import HTMLForm
 from .parser import HTMLTargetParser
 
+#Method for askink an user-informed cookie
+def getSessionWithCookie(session,url):
+    print("Inform the cookie")
+    cookie = input()
+    session.headers.update({'cookie':cookie})
+    return session
+
+#Testing for any redirects in the response
+def testAndGetSession(session,url):
+    x = session.get(url)
+    if x.history is not []:
+        print ("[!] It seems the URL is being redirected ("+str(x.history)+")")
+        print ("Redirection URL: " + x.url)
+        print ("If a login is required, then is recommended to inform a cookie for the session")
+        print ("Do you want to follow the redirect URL or inform a cookie? (f/c)")
+        ans = input()
+        if str.lower(ans) == "c":
+            session = getSessionWithCookie(session,url)
+        elif str.lower(ans) == "f":
+            print("[+] Following URL")
+        else:
+            print("[!] Invalid answer, following the redirect URL")
+    return session
+
 #Method for creating the results file for documenting all errors detected
 def createResultsFile(fileName,url,report):
     date = datetime.datetime.now()
