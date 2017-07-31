@@ -13,18 +13,25 @@ def RUN(fileName):
     url = parameters["URL"]
     resultsFile = createResultsFile(fileName,url,report)
     report["result"] = OrderedDict()
-
-    loginUrl ='http://192.168.0.43/bWAPP/login.php'
+    ip=url.split('/')
+    loginUrl ='http://'+ ip[2] +'/bWAPP/login.php'
     nonMaliciousValue='cebola'
     attemptsFolder = os.path.dirname(__file__) + '/attempts/'
     filePrefix = 'form-'
     nonMaliciousResponseFileName = '-nonMaliciousAttempt'
     errorBasedPayloadFileName =os.path.dirname(__file__) + '/payloads/error_based'
     timeBasedPayloadFileName=os.path.dirname(__file__) + '/payloads/time_based'
-    
-    session = loginIntoBWAPPApplication(loginUrl)
+    try:
+        session = loginIntoBWAPPApplication(loginUrl)
+    except Exception as e:
+        print (e)
+        return
     print ("[+] Sending request for the URL web page")
-    targetParser = parseHtmlPage(url,session)
+    try:
+        targetParser = parseHtmlPage(url,session)
+    except Exception as e:
+        print (e)
+        return
     targetFormList = targetParser.formList
     print ("[+] Parsing completed")
 

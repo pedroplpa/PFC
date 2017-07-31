@@ -10,7 +10,7 @@ def createResultsFile(fileName,url,report):
     date = datetime.datetime.now()
     resultFileName = fileName+"_result"+".json"
     resultsFile = open(resultFileName,'w')
-    report["title"] = {"date":date.strftime("%Y-%m-%d %H:%M:%S"),"url":url}
+    report["title"] = "Test sql from date: " + str(date.strftime("%Y-%m-%d %H:%M:%S")) + " on the url: " + url
     return resultsFile
 
 #Dumping all the report fields into the JSON file
@@ -28,8 +28,7 @@ def loginIntoBWAPPApplication(loginUrl,timeout = 3):
         loginPayload = {'login':'bee','password':'bug','security_level':'0','form':'submit'}
         login = session.post(loginUrl, data=loginPayload,timeout = timeout)
     except requests.Timeout:
-        print ("[-] Login request timeout")
-        exit()
+        raise Exception("[-] Login request timeout") 
     return session
     
 #Method for parsing the web page and finding all HTML forms 
@@ -40,11 +39,9 @@ def parseHtmlPage(url,session):
         targetParser = HTMLTargetParser()
         targetParser.feed(r.text)
         if not targetParser.formList:
-            print ("[-] The given URL had no forms for targetting")
-            exit()
+            raise Exception("[-] The given URL had no forms for targetting")
     except requests.Timeout:
-        print ("[-] Request for page timeout")
-        exit()
+        raise Exception("[-] Request for page timeout")
     return targetParser
 
 #Method for creating the dictionary data structure according to the referred HTML Form
