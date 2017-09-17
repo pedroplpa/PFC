@@ -1,0 +1,112 @@
+unknown column
+unknown
+no record found
+mysql_num_rows()
+mysql_fetch_array()
+error occurred while processing request
+server error in '/' application
+microsoft ole db provider for odbc drivers error
+error in your sql syntax
+invalid querystring
+ole db provider for odbc
+vbscript runtime
+adodb.field
+bof or eof
+adodb.command
+jet database
+mysql_fetch_row()
+include()
+mysql_fetch_assoc()
+mysql_fetch_object()
+mysql_numrows()
+getarray()
+fetchrow()
+input string was not in a correct format
+microsoft vbscript
+a syntax error has occurred
+adodb.field error
+asp.net is configured to show verbose error messages
+asp.net_sessionid
+active server pages error
+an illegal character has been found in the statement
+an unexpected token "end-of-statement" was found
+cli driver
+can't connect to local
+custom error message
+db2 driver
+db2 error
+db2 odbc
+died at
+disallowed parent path
+error diagnostic information
+error message : error loading required libraries.
+error report
+error converting data type varchar to numeric
+fatal error
+incorrect syntax near
+index of
+internal server error
+invalid path character
+invalid procedure call or argument
+invision power board database error
+jdbc driver
+jdbc error
+jdbc mysql
+jdbc oracle
+jdbc sql
+microsoft ole db provider for odbc drivers
+microsoft vbscript compilation error
+microsoft vbscript error
+mysql driver
+mysql error
+mysql odbc
+odbc db2
+odbc driver
+odbc error
+odbc microsoft access
+odbc oracle
+odbc sql
+odbc sql server
+ole/db provider returned message
+ora-0
+ora-1
+oracle db2
+oracle driver
+oracle error
+oracle odbc
+php error
+php parse error
+php warning
+parent directory
+permission denied: 'getobject'
+postgresql query failed: error: parser: parse error
+sql server driver][sql server
+sql command not properly ended
+sqlexception
+supplied argument is not a valid postgresql result
+syntax error in query expression
+the error occurred in
+the script whose uid is
+type mismatch
+unable to jump to row
+unclosed quotation mark before the character string
+unterminated string constant
+warning: cannot modify header information - headers already sent
+warning: supplied argument is not a valid file-handle resource in
+warning: mysql_query()
+warning: pg_connect(): unable to connect to postgresql server: fatal
+you have an error in your sql syntax
+detected an internal error [ibm][cli driver][db2/6000]
+error
+include_path
+invalid query
+is not allowed to access
+missing expression
+mysql error with query
+mysql error
+on mysql result index
+on line
+server at
+server object error
+supplied argument is not a valid mysql result resource
+unexpected end of sql command
