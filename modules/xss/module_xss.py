@@ -73,10 +73,10 @@ def RUN(fileName):
 
             #Set our strategy for Reflected and test for every payload
             detectedXSSReflected = False
-            xssPayloadFile = open(xssPayloadFileName,'r')
+            xssPayloadFile = open(xssPayloadFileName,encoding='ISO-8859-1')
             strategy = xssReflectedStrategy
             print("[+] Testing form " + str(id) + " for reflected XSS detection")
-            for attempt,xssPayload in enumerate(xssPayloadFile.read().splitlines()): 
+            for attempt,xssPayload in enumerate(xssPayloadFile.read().splitlines()):
                 dataValues = createDictionary(form,xssPayload)
                 print("[+] Sending request for FORM #" + str(id) + ". PAYLOAD: " + xssPayload)
                 retVal = strategy(url,session,dataValues,requestType)
