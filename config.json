@@ -4,5 +4,8 @@
 		"name":"module_test"},
 	"sql_injection":{
 		"directory":"sql",
-		"name":"module_sql"}
+		"name":"module_sql"},
+	"xss_check":{
+		"directory":"xss",
+		"name":"module_xss"}
 }
