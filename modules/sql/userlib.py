@@ -2,8 +2,11 @@ import json
 import requests
 import datetime
 import os
-from .parser import HTMLForm
-from .parser import HTMLTargetParser
+
+#Imports the shared HTML Parser
+import sys
+from ..shared.parser import HTMLTargetParser
+from ..shared.parser import HTMLForm
 
 #Method for askink an user-informed cookie
 def getSessionWithCookie(session,url):
