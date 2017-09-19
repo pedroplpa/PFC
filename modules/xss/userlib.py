@@ -2,8 +2,9 @@ import json
 import requests
 import datetime
 import os
-from .parser import HTMLForm
-from .parser import HTMLTargetParser
+
+from ..shared.parser import HTMLTargetParser
+from ..shared.parser import HTMLForm
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
