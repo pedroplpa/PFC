@@ -119,6 +119,7 @@ def RUN(fileName):
             timeBasedPayloadFile.close()
     except Exception as e:
         print ("[-] Too many request rejected. Host probably down.")
+        print (e)
         return    
     closeResultsFile(resultsFile,report)
     return 0

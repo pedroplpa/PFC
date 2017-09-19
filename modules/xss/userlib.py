@@ -22,9 +22,14 @@ def isAlertPresent(driver):
         return None
     except Exception:
         return None
-        
 
-#Method for askink an user-informed cookie
+
+#Imports the shared HTML Parser
+import sys
+from ..shared.parser import HTMLTargetParser
+from ..shared.parser import HTMLForm
+
+#Method for asking an user-informed cookie
 def getSessionWithCookie(session,url):
     print("Inform the cookie")
     cookie = input()
