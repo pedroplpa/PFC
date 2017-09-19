@@ -1,5 +1,12 @@
 from .userlib import *
 from collections import OrderedDict
+from selenium import webdriver
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.chrome.options import Options
+
+
 
 def BEGIN():
     res = ["URL"]
@@ -61,9 +68,15 @@ def RUN(fileName):
     report["result"]["forms-tested"] = str(idList) 
     report["result"]["vulnerabilities"]=OrderedDict()
     try:
+        print("[+] Opening test browser window")
+        chrome_options = Options()
+        chrome_options.add_argument("--no-sandbox")
+        driver = webdriver.Chrome(os.path.dirname(__file__) + '/chromedriver',chrome_options=chrome_options)  # Optional argument, if not specified will search path.
         for id in idList:
             report["result"]["vulnerabilities"]["form-"+str(id)]=OrderedDict()
             report["result"]["vulnerabilities"]["form-"+str(id)]["reflected"]=OrderedDict()
+            report["result"]["vulnerabilities"]["form-"+str(id)]["stored"]=OrderedDict()
+
             form = targetFormList[id]
             dataValues = createDictionary(form,nonMaliciousValue)
             filePath = attemptsFolder + filePrefix + str(id) + nonMaliciousResponseFileName
@@ -72,33 +85,40 @@ def RUN(fileName):
             sendRequestAndSaveResponse(url,session,dataValues,requestType,filePath)
 
             #Set our strategy for Reflected and test for every payload
-            detectedXSSReflected = False
             xssPayloadFile = open(xssPayloadFileName,encoding='ISO-8859-1')
             strategy = xssReflectedStrategy
             print("[+] Testing form " + str(id) + " for reflected XSS detection")
             for attempt,xssPayload in enumerate(xssPayloadFile.read().splitlines()):
                 dataValues = createDictionary(form,xssPayload)
                 print("[+] Sending request for FORM #" + str(id) + ". PAYLOAD: " + xssPayload)
-                retVal = strategy(url,session,dataValues,requestType)
+                retVal = strategy(url,session,dataValues,requestType,driver)
                 #If the first field of retVal is true, then there were vulnerabilities detected
                 if retVal and retVal[0]:
-                    detectedXSSReflected = True
                     print ("[!] Possible reflected xss vulnerability detected for form " 
                             + str(id) + " using payload " + xssPayload)
 
                     report["result"]["vulnerabilities"]["form-"+str(id)]["reflected"]["payload "+xssPayload+" "]=retVal[1]
-                    print ("Do you want to continue testing (y/n)?")
-                    ans = input()
-                    if (str.lower(ans) == "n"):
-                        break
-            xssPayloadFile.close()
+                    print ("[!] Sending non-malicious request to check for stored xss as well")
+                    dataValues = createDictionary(form,nonMaliciousValue)
+                    print("[+] Sending non-malicious request for FORM #" + str(id) + ". Fields: " + nonMaliciousValue)
+                    retVal = strategy(url,session,dataValues,requestType,driver)
+                    #If the first field of retVal is true, then there were vulnerabilities detected
+                    if retVal and retVal[0]:
+                        detectedXSSStored = True
+                        print ("[!] Possible stored xss vulnerability detected for form " 
+                            + str(id) + " using payload " + xssPayload)
+                        report["result"]["vulnerabilities"]["form-"+str(id)]["stored"]["payload "+xssPayload+" "]=retVal[1]
+                    else:
+                        print ("[!] No stored xss found")
+                break
 
     except Exception as e:
-        print ("[-] Too many request rejected. Host probably down.")
-        print (e)
-        return    
+        print ("[-] An error has occurred!")
+        return
+    xssPayloadFile.close()
     closeResultsFile(resultsFile,report)
-    return 0
+    driver.close()
+    return 
         #payloadFile = open(payloadFileName,'r')
         #for attempt,payload in enumerate(payloadFile.read().splitlines()): 
         #    dataValues = createDictionary(form,payload)

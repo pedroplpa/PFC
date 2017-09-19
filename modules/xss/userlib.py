@@ -4,6 +4,25 @@ import datetime
 import os
 from .parser import HTMLForm
 from .parser import HTMLTargetParser
+from selenium import webdriver
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import TimeoutException
+from selenium.common.exceptions import NoAlertPresentException
+from selenium.webdriver.chrome.options import Options
+
+
+def isAlertPresent(driver):
+    try:
+        alert = driver.switch_to.alert
+        msg = alert.text
+        alert.accept()
+        return msg
+    except NoAlertPresentException as e:
+        return None
+    except Exception:
+        return None
+        
 
 #Method for askink an user-informed cookie
 def getSessionWithCookie(session,url):
@@ -98,7 +117,7 @@ def sendRequestAndSaveResponse(url,session,dataValues,requestType,fileName,timeo
     f.write(s.text)
     f.close()
 
-def xssReflectedStrategy (url,session, dataValues,requestType):
+def xssReflectedStrategy (url,session, dataValues,requestType,driver):
     timeout = 4
     result = False
     messageList=[]
@@ -112,11 +131,24 @@ def xssReflectedStrategy (url,session, dataValues,requestType):
         return
     
     payloadText = dataValues[list(dataValues.keys())[0]]
+    with open(os.path.dirname(__file__) + "/temp_page.html","w") as f:
+        f.write(s.text)
+    driver.get("file://"+os.path.dirname(__file__) + '/temp_page.html')
+    
+    try:
+        wait = WebDriverWait(driver, 1)
+        wait.until(EC.alert_is_present())
+    except TimeoutException as e:
+        print ("[-] No errors detected")
+        return False,None
+    
+    msg = isAlertPresent(driver)
+    while(msg):
+        if msg and "XSS" in msg:
+            messageList.append(str(payloadText).rstrip())
+            result = True
+        msg = isAlertPresent(driver)
 
-    if str.lower(payloadText).rstrip() in str.lower(s.text):
-        #print ("[-] Detected \"" + payloadText + "\" in the response, possible XSS reflected vulnerability")
-        messageList.append(str(payloadText).rstrip())
-        result = True
     if not result:
         print ("[-] No errors detected")
     return result,messageList
