@@ -135,8 +135,8 @@ def timeBasedBlindSQLStrategy (url,session,dataValues,requestType):
             s = session.get(url, params = dataValues,timeout = timeout)
     except requests.Timeout:
         #If the request timeouts, increase the timeout value to 10 seconds to ensure it is not a false positive
-        print ("[+] Possible time-based SQL injection vulnerability detected. Setting timeout for 10 seconds to reduce the chance of false-positive")
-        timeout = 10
+        timeout = 8
+        print ("[+] Possible time-based SQL injection vulnerability detected. Setting a greater timeout to reduce the chance of false-positive")
         print ("[+] Sending a new request to check if the server is OK.")
         try:
             if (requestType == 'POST'):

@@ -122,6 +122,7 @@ def RUN(fileName):
         print (e)
         return    
     closeResultsFile(resultsFile,report)
+    input("Press enter to continue...")
     return 0
         #payloadFile = open(payloadFileName,'r')
         #for attempt,payload in enumerate(payloadFile.read().splitlines()): 

@@ -100,7 +100,7 @@ def RUN(fileName):
                     report["result"]["vulnerabilities"]["form-"+str(id)]["reflected"]["payload "+xssPayload+" "]=retVal[1]
                     print ("[!] Sending non-malicious request to check for stored xss as well")
                     dataValues = createDictionary(form,nonMaliciousValue)
-                    print("[+] Sending non-malicious request for FORM #" + str(id) + ". Fields: " + nonMaliciousValue)
+                    print("[+] Sending non-malicious request for FORM #" + str(id) + ".")
                     retVal = strategy(url,session,dataValues,requestType,driver)
                     #If the first field of retVal is true, then there were vulnerabilities detected
                     if retVal and retVal[0]:
@@ -109,6 +109,7 @@ def RUN(fileName):
                             + str(id) + " using payload " + xssPayload)
                         report["result"]["vulnerabilities"]["form-"+str(id)]["stored"]["payload "+xssPayload+" "]=retVal[1]
                     else:
+                        print ("[!] Possible reflected xss vulnerability detected")
                         print ("[!] No stored xss found")
                 break
 
@@ -118,6 +119,7 @@ def RUN(fileName):
     xssPayloadFile.close()
     closeResultsFile(resultsFile,report)
     driver.close()
+    input("Press enter to continue...")
     return 
         #payloadFile = open(payloadFileName,'r')
         #for attempt,payload in enumerate(payloadFile.read().splitlines()): 
