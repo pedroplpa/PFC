@@ -1,5 +1,4 @@
 unknown column
-unknown
 no record found
 mysql_num_rows()
 mysql_fetch_array()
@@ -97,7 +96,6 @@ warning: mysql_query()
 warning: pg_connect(): unable to connect to postgresql server: fatal
 you have an error in your sql syntax
 detected an internal error [ibm][cli driver][db2/6000]
-error
 include_path
 invalid query
 is not allowed to access
